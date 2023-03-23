@@ -10,7 +10,7 @@ body {
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    padding: 20px;
+
 }
 
 ul {
@@ -25,6 +25,7 @@ ul>li {
 .wrapper {
     height: 100vh;
     background: url(ja.jpg) no-repeat center/cover;
+    padding: 20px;
 }
 
 .container {
@@ -33,6 +34,8 @@ ul>li {
     
 }
 
+
+
 .header {
     display: flex;
     align-items: center;
@@ -40,6 +43,8 @@ ul>li {
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
+
+
 
 /* Блок добавления задачи (поле и кнопка) */
 .add-block {
@@ -91,7 +96,7 @@ ul>li {
     flex-basis: 450px; 
     margin: 10px;
     height: 40px;
-    width: 500px;
+    max-width: 500px;
     padding: 10px;
     font-size: 20px;
 }
