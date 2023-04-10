@@ -4,9 +4,6 @@ let list = document.querySelector('#list')
 
 let tasks = []
 
-if (localStorage.getItem('taskLS')) {
-    list.innerHTML = localStorage.getItem('taskLS')
-}
 
 function addTask(newItem) {
     newItem.classList.add('item')
@@ -26,9 +23,9 @@ function addTask(newItem) {
     deleteBtn.setAttribute('data-action', 'delete')
 
     let newTask = {
-         id: Date.now(),
-         text: taskInput.value,
-         done: false, 
+        id: Date.now(),
+        text: taskInput.value,
+        complete: false,
 
     }
 
@@ -37,7 +34,7 @@ function addTask(newItem) {
 }
 
 
-list.addEventListener('click', function(event){
+list.addEventListener('click', function (event) {
     let target = event.target;
     if (target.dataset.action == 'complete') {
         completeBtn(target);
@@ -47,26 +44,36 @@ list.addEventListener('click', function(event){
     }
 })
 
-addBtn.addEventListener('click', function(event){
+addBtn.addEventListener('click', function (event) {
     const newItem = document.createElement('li')
     addTask(newItem)
     list.append(newItem)
     taskInput.value = ''
-    localStorage.setItem('tasksLS', list.innerHTML)
+    writeLS();
 });
 
 function completeBtn(target) {
     target.closest('li').classList.toggle('done');
-    localStorage.setItem('tasksLS', list.innerHTML)
+    let currentId = target.closest('li').id;
+
+    let index = tasks.findIndex((task) => {
+        return task.id == currentId;
+    })
+
+    if (tasks[index].complete == false) {
+        tasks[index].complete = true;
+    } else {
+        tasks[index].complete = false;
+    }
 }
 
 function removeTask(target) {
     target.closest('li').remove();
     taskInput.value = ''
     localStorage.setItem('tasksLS', list.innerHTML)
-    let index = tasks.findIndex(function(task){
+    let index = tasks.findIndex((task) => {
         return task.id = target.closest('li').id
     })
     tasks.splice(index, 1)
-    console.log(tasks)
+
 }
