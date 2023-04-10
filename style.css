@@ -108,12 +108,12 @@ ul>li {
 
 
 /* Символ корзины */
-.fa-trash {
+.fa-trash-can {
  color: rgb(247, 79, 79);
 }
 
 /* Символ чекбокса */
-.fa-check {
+.fa-square-check {
     margin-right: 20px;
     color: rgb(159, 255, 118);
 

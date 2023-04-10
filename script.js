@@ -2,36 +2,71 @@ let addBtn = document.querySelector('#addBtn')
 let taskInput = document.querySelector('#taskInput')
 let list = document.querySelector('#list')
 
-if (localStorage.getItem('htmlLs')) {
-    list.innerHTML = localStorage.getItem('htmlLs')
+let tasks = []
+
+if (localStorage.getItem('taskLS')) {
+    list.innerHTML = localStorage.getItem('taskLS')
 }
 
-addBtn.addEventListener('click', () => {
-    let elemList = document.createElement('li')
-    elemList.classList.add('item')
-    elemList.textContent = taskInput.value
-    list.append(elemList)
+function addTask(newItem) {
+    newItem.classList.add('item')
+    newItem.textContent = taskInput.value;
+    const itemBtns = document.createElement('div');
+    newItem.append(itemBtns);
+    itemBtns.className = 'item__btns';
+
+    const doneBtn = document.createElement('i')
+    doneBtn.className = 'fa-regular fa-square-check'
+    itemBtns.append(doneBtn)
+    doneBtn.setAttribute('data-action', 'complete')
+
+    const deleteBtn = document.createElement('i')
+    deleteBtn.className = 'fa-solid fa-trash-can'
+    itemBtns.append(deleteBtn)
+    deleteBtn.setAttribute('data-action', 'delete')
+
+    let newTask = {
+         id: Date.now(),
+         text: taskInput.value,
+         done: false, 
+
+    }
+
+    tasks.push(newTask);
+    newItem.setAttribute('id', newTask.id)
+}
 
 
-    let item = document.createElement('div')
-    item.className = 'item_btns'
-    elemList.append(item)
-
-    let checkBox = document.createElement('i')
-    checkBox.className = "fa-solid fa-check"
-    item.append(checkBox)
-
-    checkBox.addEventListener('click', function () {
-        elemList.classList.toggle('done')
-    })
-
-    let delBtn = document.createElement('i')
-    delBtn.className = ' fa-solid fa-trash'
-    item.append(delBtn)
-
-    delBtn.addEventListener('click', function () {
-        list.removeChild(elemList)
-    })
-    taskInput.value = ''
-    localStorage.setItem('htmlLs', list.innerHTML)
+list.addEventListener('click', function(event){
+    let target = event.target;
+    if (target.dataset.action == 'complete') {
+        completeBtn(target);
+    }
+    if (target.dataset.action == 'delete') {
+        removeTask(target);
+    }
 })
+
+addBtn.addEventListener('click', function(event){
+    const newItem = document.createElement('li')
+    addTask(newItem)
+    list.append(newItem)
+    taskInput.value = ''
+    localStorage.setItem('tasksLS', list.innerHTML)
+});
+
+function completeBtn(target) {
+    target.closest('li').classList.toggle('done');
+    localStorage.setItem('tasksLS', list.innerHTML)
+}
+
+function removeTask(target) {
+    target.closest('li').remove();
+    taskInput.value = ''
+    localStorage.setItem('tasksLS', list.innerHTML)
+    let index = tasks.findIndex(function(task){
+        return task.id = target.closest('li').id
+    })
+    tasks.splice(index, 1)
+    console.log(tasks)
+}
